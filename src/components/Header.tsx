@@ -1,9 +1,17 @@
 import React from 'react'
+import { Cart } from '../data/types'
 
-type Props = {}
+type HeaderProps = {
+  cart: Cart[]
+}
 
-const Header = (props: Props) => {
-  return <div>Header</div>
+const Header = ({ cart }: HeaderProps) => {
+  return (
+    <div className='header-view'>
+      <h1>Harry Dresden's Wizard Emporium</h1>
+      <button>Show Cart</button>
+    </div>
+  )
 }
 
 export default Header
