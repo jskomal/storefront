@@ -1,15 +1,6 @@
-export type Titems = {
-  imgURL: string
-  name: string
-  description: string
-  type: string
-  quantity: number
-  price: number
-  enchantments?: string[]
-  id: number
-}
+import { TItem } from './types'
 
-export const ITEMS: Titems[] = [
+export const ITEMS: TItem[] = [
   {
     id: 0,
     name: 'Fire Extinguister',
