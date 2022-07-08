@@ -1,15 +1,16 @@
-import React from 'react'
-import { Cart } from '../data/types'
+import { CartItem } from '../data/types'
 
 type HeaderProps = {
-  cart: Cart[]
+  cart: CartItem[]
+  toggleCartOpen: () => void
+  cartIsOpen: boolean
 }
 
-const Header = ({ cart }: HeaderProps) => {
+const Header = ({ cart, toggleCartOpen, cartIsOpen }: HeaderProps) => {
   return (
     <div className='header-view'>
       <h1>Harry Dresden's Wizard Emporium</h1>
-      <button>Show Cart</button>
+      <button onClick={toggleCartOpen}>{cartIsOpen ? 'Hide Cart' : 'Show Cart'}</button>
     </div>
   )
 }
