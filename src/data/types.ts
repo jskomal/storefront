@@ -1,3 +1,15 @@
-import { Titems } from './items'
+export type TItem = {
+  imgURL: string
+  name: string
+  description: string
+  type: string
+  quantity: number
+  price: number
+  enchantments?: string[]
+  id: number
+}
 
-export type Cart = {}
+export interface CartItem extends TItem {
+  cartID: number
+  quantity: number
+}
