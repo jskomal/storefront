@@ -57,7 +57,9 @@ const CartQuantity = ({
         value={itemQuantity}
         onChange={handleInputChange}
       />
-      <button onClick={updateCartQuantity}>Edit Quantity</button>
+      <button onClick={updateCartQuantity}>
+        {itemQuantity === 0 ? 'Remove from cart' : 'Edit Quantity'}
+      </button>
     </div>
   )
 }
