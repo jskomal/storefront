@@ -11,5 +11,5 @@ export type TItem = {
 
 export interface CartItem extends TItem {
   cartID: number
-  quantity: number
+  cartQuantity: number
 }
