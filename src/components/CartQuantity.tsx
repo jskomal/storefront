@@ -22,7 +22,10 @@ const CartQuantity = ({
     if (parseInt(e.target.value) < 0) {
       setCartErrorMsg('Please input a number greater or equal than 0.')
       return
+    } else if (parseInt(e.target.value) > item.quantity + item.cartQuantity) {
+      setCartErrorMsg(`Cannot add more ${item.name} than is in stock.`)
     } else {
+      console.log('first')
       setCartErrorMsg('')
     }
     setitemQuantity(parseInt(e.target.value))
@@ -32,7 +35,8 @@ const CartQuantity = ({
     const prevCartItemQuantity = item.cartQuantity
     setCart((prev) => {
       item.cartQuantity = itemQuantity
-      if (item.cartQuantity <= 0) {
+      if (item.cartQuantity === 0) {
+        setCartErrorMsg('')
         setItems((previous) => {
           const itemToRevert = previous.find((element) => element.id === item.id)
           if (itemToRevert) {
