@@ -1,19 +1,30 @@
 import { useState } from 'react'
-import { CartItem } from '../data/types'
+import { TItem, CartItem } from '../data/types'
 
-type Props = {
+type CartQuantityProps = {
   item: CartItem
   setCart: React.Dispatch<React.SetStateAction<CartItem[]>>
+  setCartIsOpen: React.Dispatch<React.SetStateAction<boolean>>
+  setItems: React.Dispatch<React.SetStateAction<TItem[]>>
 }
 
-const CartQuantity = ({ item, setCart }: Props) => {
-  const [itemQuantity, setitemQuantity] = useState(item.quantity)
+const CartQuantity = ({ item, setCart, setCartIsOpen, setItems }: CartQuantityProps) => {
+  const [itemQuantity, setitemQuantity] = useState(item.cartQuantity)
 
   const updateCartQuantity = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     setCart((prev) => {
-      item.quantity = itemQuantity
-      if (item.quantity <= 0) {
+      const prevCartItemQuantity = item.cartQuantity
+      item.cartQuantity = itemQuantity
+      if (item.cartQuantity <= 0) {
+        setItems((previous) => {
+          let itemToRevert = previous.find((element) => element.id === item.id)
+          if (itemToRevert) {
+            itemToRevert.quantity += prevCartItemQuantity
+          }
+          return [...previous]
+        })
         const filteredPrev = prev.filter((element) => element.id !== item.id)
+        if (!filteredPrev.length) setCartIsOpen(false)
         return [...filteredPrev]
       }
       return [...prev]
@@ -25,7 +36,7 @@ const CartQuantity = ({ item, setCart }: Props) => {
       <input
         type='number'
         name='cartQuantity'
-        placeholder={item.quantity.toString()}
+        placeholder={item.cartQuantity.toString()}
         value={itemQuantity}
         id={item.id.toString()}
         onChange={(e) => setitemQuantity(parseInt(e.target.value))}
