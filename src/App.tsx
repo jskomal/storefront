@@ -9,7 +9,7 @@ import Cart from './components/Cart'
 import { ITEMS } from './data/items'
 
 // Types
-import { CartItem } from './data/types'
+import { CartItem, TItem } from './data/types'
 
 const App = () => {
   const [items, setItems] = useState(ITEMS)
@@ -18,25 +18,40 @@ const App = () => {
   const [errorMsg, setErrorMsg] = useState('You should never see this')
   const errorMsgRef = useRef<HTMLParagraphElement>(null)
 
-  const addToCart = (e: any) => {
-    setItems((prev) => {
-      const indexToChange = prev.findIndex((item) => item.id === parseInt(e.target.value))
-      prev[indexToChange].quantity--
-      return [...prev]
-    })
-    setCart((prev) => {
-      const newCartItem = items.find((item) => item.id === parseInt(e.target.value))
-      if (newCartItem) {
-        const indexOfFound = prev.findIndex((item) => item.name === newCartItem.name)
+  const addToCart = (target: TItem) => {
+    if (target.quantity > 0) {
+      setItems((prev) => {
+        const foundItem = prev.find((item) => item.id === target.id)
+        if (foundItem) {
+          foundItem.quantity--
+        }
+        return [...prev]
+      })
+      setCart((prev) => {
+        const indexOfFound = prev.findIndex((item) => item.name === target.name)
         if (indexOfFound === -1) {
-          const ItemToAdd: CartItem = { ...newCartItem, cartID: cart.length, quantity: 1 }
+          const ItemToAdd: CartItem = {
+            ...target,
+            cartID: cart.length,
+            cartQuantity: 1
+          }
           prev.push(ItemToAdd)
         } else {
-          prev[indexOfFound].quantity++
+          prev[indexOfFound].cartQuantity++
         }
-      }
-      return [...prev]
-    })
+
+        return [...prev]
+      })
+    } else {
+      errorMsgRef.current?.classList.remove('error-msg-init')
+      errorMsgRef.current?.classList.remove('fade-out')
+      errorMsgRef.current?.classList.add('fade-in')
+      setErrorMsg(`Cannot add ${target.name} to cart, as there is not enough in stock.`)
+      setTimeout(() => {
+        errorMsgRef.current?.classList.remove('fade-in')
+        errorMsgRef.current?.classList.add('fade-out')
+      }, 4000)
+    }
   }
 
   const toggleCartOpen = () => {
@@ -61,7 +76,14 @@ const App = () => {
         {errorMsg}
       </p>
       <Storefront items={items} addToCart={addToCart} cart={cart} />
-      {cartIsOpen && cart[0] && <Cart cart={cart} setCart={setCart} />}
+      {cartIsOpen && (
+        <Cart
+          cart={cart}
+          setCart={setCart}
+          setCartIsOpen={setCartIsOpen}
+          setItems={setItems}
+        />
+      )}
     </div>
   )
 }
