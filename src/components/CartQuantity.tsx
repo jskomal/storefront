@@ -17,7 +17,7 @@ const CartQuantity = ({ item, setCart, setCartIsOpen, setItems }: CartQuantityPr
       item.cartQuantity = itemQuantity
       if (item.cartQuantity <= 0) {
         setItems((previous) => {
-          let itemToRevert = previous.find((element) => element.id === item.id)
+          const itemToRevert = previous.find((element) => element.id === item.id)
           if (itemToRevert) {
             itemToRevert.quantity += prevCartItemQuantity
           }
