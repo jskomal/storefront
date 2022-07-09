@@ -55,7 +55,6 @@ const CartQuantity = ({
         name='cartQuantity'
         placeholder={item.cartQuantity.toString()}
         value={itemQuantity}
-        id={item.id.toString()}
         onChange={handleInputChange}
       />
       <button onClick={updateCartQuantity}>Edit Quantity</button>
