@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { TItem, CartItem } from '../data/types'
+import { ITEMS } from '../data/items'
 
 type CartQuantityProps = {
   item: CartItem
@@ -17,15 +18,19 @@ const CartQuantity = ({
   setCartErrorMsg
 }: CartQuantityProps) => {
   const [itemQuantity, setitemQuantity] = useState(item.cartQuantity)
+  const immutableItemQuantity = ITEMS.find((element) => element.id === item.id)?.quantity
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (parseInt(e.target.value) < 0) {
       setCartErrorMsg('Please input a number greater or equal than 0.')
       return
-    } else if (parseInt(e.target.value) > item.quantity + item.cartQuantity) {
+    } else if (
+      typeof immutableItemQuantity === 'number' &&
+      parseInt(e.target.value) > immutableItemQuantity
+    ) {
       setCartErrorMsg(`Cannot add more ${item.name} than is in stock.`)
+      return
     } else {
-      console.log('first')
       setCartErrorMsg('')
     }
     setitemQuantity(parseInt(e.target.value))
@@ -36,7 +41,6 @@ const CartQuantity = ({
     setCart((prev) => {
       item.cartQuantity = itemQuantity
       if (item.cartQuantity === 0) {
-        setCartErrorMsg('')
         setItems((previous) => {
           const itemToRevert = previous.find((element) => element.id === item.id)
           if (itemToRevert) {
