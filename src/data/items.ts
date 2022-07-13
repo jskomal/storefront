@@ -63,3 +63,5 @@ export const ITEMS: TItem[] = [
       'https://target.scene7.com/is/image/Target/GUEST_49092929-1a3d-49bd-a40c-7c19192e2882?wid=488&hei=488&fmt=pjpeg'
   }
 ]
+
+export const mutableItems: TItem[] = structuredClone(ITEMS)
