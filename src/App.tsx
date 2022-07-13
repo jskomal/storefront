@@ -6,13 +6,13 @@ import Storefront from './components/Storefront'
 import Cart from './components/Cart'
 
 // Data
-import { ITEMS } from './data/items'
+import { mutableItems } from './data/items'
 
 // Types
 import { CartItem, TItem } from './data/types'
 
 const App = () => {
-  const [items, setItems] = useState(ITEMS)
+  const [items, setItems] = useState(mutableItems)
   const [cart, setCart] = useState<CartItem[]>([])
   const [cartIsOpen, setCartIsOpen] = useState(false)
   const [errorMsg, setErrorMsg] = useState('You should never see this')
